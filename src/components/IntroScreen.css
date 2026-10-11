@@ -1,0 +1,147 @@
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+  .intro-root {
+    position: fixed; inset: 0; z-index: 99999;
+    width: 100vw; height: 100vh;
+    background-color: #0d0805;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .intro-root *, .intro-root *::before, .intro-root *::after {  }
+
+  /* ── Looping fade video background ── */
+  .intro-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0; /* driven by rAF loop in JS */
+  }
+
+  /* ── Gradient overlay for logo/text legibility ── */
+  .intro-gradient-overlay {
+    position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: linear-gradient(180deg,
+      rgba(13,8,5,0.55) 0%,
+      rgba(13,8,5,0.15) 35%,
+      rgba(13,8,5,0.15) 65%,
+      rgba(13,8,5,0.65) 100%
+    );
+  }
+
+  /* Fade-out of whole intro */
+  .intro-root.intro-exit {
+    animation: intro-fade-out 1.2s cubic-bezier(0.4,0,1,1) forwards;
+  }
+  @keyframes intro-fade-out {
+    0%   { opacity: 1; }
+    100% { opacity: 0; pointer-events: none; }
+  }
+
+  /* ── Logo container ── */
+  .intro-logo-wrap {
+    position: relative;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  /* The actual logo image */
+  .intro-logo-img {
+    width: clamp(220px, 32vw, 440px);
+    height: auto;
+    opacity: 0;
+    transform: translateY(40px) scale(0.88);
+    animation: intro-logo-rise 1.8s 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+    filter: drop-shadow(0 0 0px rgba(220,160,30,0)) brightness(0.0);
+  }
+  @keyframes intro-logo-rise {
+    0%   { opacity: 0; transform: translateY(40px) scale(0.88); filter: brightness(0) drop-shadow(0 0 0px rgba(220,160,30,0)); }
+    18%  { opacity: 0.6; filter: brightness(2.5) drop-shadow(0 0 40px rgba(255,210,60,0.95)) saturate(0.4); }
+    42%  { opacity: 1; transform: translateY(-6px) scale(1.04); filter: brightness(1.6) drop-shadow(0 0 24px rgba(220,160,30,0.7)); }
+    68%  { transform: translateY(3px) scale(0.99); filter: brightness(1.15) drop-shadow(0 0 14px rgba(200,140,20,0.45)); }
+    85%  { transform: translateY(-1px) scale(1.005); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1) drop-shadow(0 0 10px rgba(200,140,20,0.35)); }
+  }
+
+  /* Logo idle float + gold glow pulse */
+  .intro-logo-img.intro-logo-idle {
+    animation: intro-logo-rise 1.8s 0.5s cubic-bezier(0.22,1,0.36,1) forwards,
+               intro-logo-float 5s 2.6s ease-in-out infinite,
+               intro-logo-glow  3s 2.6s ease-in-out infinite;
+  }
+  @keyframes intro-logo-float {
+    0%,100% { transform: translateY(0px); }
+    50%     { transform: translateY(-10px); }
+  }
+  @keyframes intro-logo-glow {
+    0%,100% { filter: brightness(1) drop-shadow(0 0 14px rgba(200,140,20,0.35)) drop-shadow(0 0 35px rgba(180,120,10,0.2)); }
+    50%     { filter: brightness(1.12) drop-shadow(0 0 26px rgba(255,200,50,0.7)) drop-shadow(0 0 55px rgba(200,140,20,0.4)); }
+  }
+
+  /* ── ENTER prompt ── */
+  .intro-enter-btn {
+    position: relative;
+    margin-top: clamp(28px, 4vw, 48px);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(9px, 1.0vw, 12px);
+    letter-spacing: 0.55em;
+    color: rgba(255,255,255,0.0);
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(212,180,100,0.0);
+    padding: 14px 40px;
+    
+    transition: color 0.3s, border-color 0.3s, box-shadow 0.3s, background 0.3s;
+    animation: intro-btn-reveal 0.9s 3.4s ease-out forwards;
+  }
+  @keyframes intro-btn-reveal {
+    to {
+      color: rgba(255,255,255,0.92);
+      border-color: rgba(212,180,100,0.5);
+    }
+  }
+  .intro-enter-btn:hover {
+    color: #fff !important;
+    border-color: rgba(212,180,100,0.9) !important;
+    background: rgba(212,180,100,0.06) !important;
+    box-shadow: 0 0 20px rgba(212,180,100,0.22), inset 0 0 12px rgba(212,180,100,0.06) !important;
+  }
+  /* Corner accents on button */
+  .intro-enter-btn::before,
+  .intro-enter-btn::after {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px;
+    border-color: rgba(212,180,100,0.7);
+    border-style: solid;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .intro-enter-btn::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+  .intro-enter-btn::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+  .intro-enter-btn:hover::before,
+  .intro-enter-btn:hover::after { opacity: 1; }
+
+  /* Blink the enter text */
+  .intro-enter-btn span {
+    animation: intro-blink 2.4s 4s ease-in-out infinite;
+  }
+  @keyframes intro-blink {
+    0%,100% { opacity: 1; }
+    50%     { opacity: 0.45; }
+  }
+
+
+
+  /* ── Vignette overlay ── */
+  .intro-vignette {
+    position: absolute; inset: 0; pointer-events: none; z-index: 2;
+    background: radial-gradient(ellipse 90% 80% at 50% 50%,
+      transparent 30%,
+      rgba(0,0,0,0.45) 75%,
+      rgba(0,0,0,0.85) 100%
+    );
+  }
+

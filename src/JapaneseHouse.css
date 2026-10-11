@@ -1,0 +1,77 @@
+.jh-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 60px 20px;
+}
+
+.jh-wrap {
+  position: relative;
+  width: min(600px, 90vw);
+  height: 420px;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+  cursor: default;
+}
+
+.jh-layer {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.jh-ground {
+  width: 70%;
+  height: 24px;
+  left: 15%;
+  top: 78%;
+  background: radial-gradient(ellipse at center, rgba(212,180,100,0.12), transparent 70%);
+  transform: translateZ(-40px);
+  filter: blur(2px);
+}
+
+.jh-svg {
+  width: 100%;
+  height: 100%;
+  transform: translateZ(0px);
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+}
+
+.jh-pine {
+  width: 100%;
+  height: 100%;
+  transform: translateZ(60px);
+  pointer-events: none;
+}
+
+.jh-lantern rect {
+  animation: jh-lantern-glow 2.4s ease-in-out infinite;
+}
+.jh-lantern-2 rect {
+  animation-delay: 1.1s;
+}
+@keyframes jh-lantern-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.95; }
+}
+
+.jh-glow-window {
+  animation: jh-window-glow 3.6s ease-in-out infinite;
+}
+@keyframes jh-window-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.85; }
+}
+
+.jh-hint {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(181,128,74,0.5);
+}
+
+@media (max-width: 700px) {
+  .jh-wrap { height: 320px; }
+}
